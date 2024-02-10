@@ -6,6 +6,7 @@
 A simple Node.js function to unshorten shortened URLs, revealing their final destinations.
 
 # Installation
+
 1. Clone the repository:
 
 Bash
