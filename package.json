@@ -1,6 +1,6 @@
 {
   "name": "gmaps-expand-shorturl",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Library to expand shorturl from gmaps",
   "main": "index.js",
   "scripts": {
