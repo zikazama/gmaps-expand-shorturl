@@ -1,0 +1,23 @@
+{
+  "name": "gmaps-expand-shorturl",
+  "version": "1.0.0",
+  "description": "Library to expand shorturl from gmaps",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zikazama/gmaps-expand-shorturl.git"
+  },
+  "keywords": [
+    "gmaps",
+    "shorturl"
+  ],
+  "author": "Fauzi Fadhlurrohman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zikazama/gmaps-expand-shorturl/issues"
+  },
+  "homepage": "https://github.com/zikazama/gmaps-expand-shorturl#readme"
+}
