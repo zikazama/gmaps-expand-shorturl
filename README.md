@@ -1,40 +1,37 @@
 # gmaps-expand-shorturl
 
-# Unshorten URL
 
-This script allows you to unshorten a shortened URL using Node.js. It follows redirects to reveal the ultimate destination URL.
+# URL Unshortener in Node.js
 
-# Prerequisites
+A simple Node.js function to unshorten shortened URLs, revealing their final destinations.
 
-Node.js installed on your system. You can download and install it from here.
-Installation
+# Installation
+1. Clone the repository:
 
-Clone this repository to your local machine or download the files directly.
-git clone <repository-url>
+Bash
+git clone https://github.com/zikazama/gmaps-expand-shorturl
+Use code with caution. Learn more
 
-Navigate to the project directory.
-cd unshorten-url
+2. Install dependencies:
 
-Install the required dependencies.
+Bash
 npm install
+Use code with caution. Learn more
 
 # Usage
+1. Import the function:
 
-Import the script into your Node.js project.
-const unshortenUrl = require('./unshortenUrl');
+JavaScript
+const convertMapUrlToPoint = require('./convertMapUrlToPoint');
 
-Call the unshortenUrl function with the shortened URL as an argument.
-unshortenUrl('http://example.com/shortened');
+2. Call the function with a shortened URL:
 
-Replace 'http://example.com/shortened' with the URL you want to unshorten.
+JavaScript
+const pointLatLong = await convertMapUrlToPoint('https://maps.app.goo.gl/hvoaKDU5ZiBfsuWk7');
 
-Run your Node.js script.
-node your_script.js
-
-# Example
-
-const unshortenUrl = require('./unshortenUrl');
-
-unshortenUrl('http://example.com/shortened');
-
-This will output the ultimate destination URL.
+# Features
+Secure HTTP requests: Uses the https module for secure communication.
+Error handling: Gracefully handles potential errors during URL parsing and network requests.
+Recursive unshortening: Supports multiple redirects to uncover the final URL.
+Promise-based: Returns a promise for convenient asynchronous handling.
+Clear comments: Includes explanatory comments for better understanding.
