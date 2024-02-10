@@ -11,13 +11,12 @@ A simple Node.js function to unshorten shortened URLs, revealing their final des
 
 Bash
 git clone https://github.com/zikazama/gmaps-expand-shorturl
-Use code with caution. Learn more
+
 
 2. Install dependencies:
 
 Bash
-npm install
-Use code with caution. Learn more
+npm i gmaps-expand-shorturl
 
 # Usage
 1. Import the function:
