@@ -1,6 +1,6 @@
 {
   "name": "gmaps-expand-shorturl",
-  "version": "1.0.0",
+  "version": "2.0.",
   "description": "Library to expand shorturl from gmaps",
   "main": "index.js",
   "scripts": {
@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/zikazama/gmaps-expand-shorturl/issues"
   },
-  "homepage": "https://github.com/zikazama/gmaps-expand-shorturl#readme"
+  "homepage": "https://github.com/zikazama/gmaps-expand-shorturl#readme",
+  "dependencies": {
+    "puppeteer": "^22.0.0"
+  }
 }

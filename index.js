@@ -1,5 +1,6 @@
 const https = require("https");
 const url = require("url");
+const puppeteer = require("puppeteer");
 
 function unshortenUrl(url) {
   return new Promise((resolve, reject) => {
@@ -57,12 +58,38 @@ async function convertMapUrlToPoint(url) {
   return unshortenUrl(url)
     .then((unshortenedUrl) => {
       console.log("Unshortened URL:", unshortenedUrl);
-      console.log(urlToPoint(unshortenedUrl));
-      return urlToPoint(unshortenedUrl);
+      let coor = urlToPoint(unshortenedUrl);
+      if(coor === null){
+        coor = getCoordsWithPuppeteer(unshortenedUrl);
+      }
+      return coor;
     })
     .catch((error) => {
       console.error("Error unshortening URL:", error);
     });
+}
+
+async function getCoordsWithPuppeteer(url) {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+
+  try {
+    await page.goto(url);
+
+    // Wait for 3 seconds for the full URL to appear
+    await new Promise((res) => setTimeout(res, 5000));
+
+    const fullUrl = page.url(); // Get the updated URL
+
+    const coords = await convertMapUrlToPoint(fullUrl); // Use your existing parsing function
+
+    return coords;
+  } catch (error) {
+    console.error("Error using Puppeteer:", error);
+    return null;
+  } finally {
+    await browser.close(); // Close the browser
+  }
 }
 
 module.exports = { convertMapUrlToPoint };
