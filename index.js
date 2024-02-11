@@ -1,6 +1,8 @@
 const https = require("https");
-const url = require("url");
 const puppeteer = require("puppeteer");
+
+let limitRequestInit = 0;
+let limitRequest = 3;
 
 function unshortenUrl(url) {
   return new Promise((resolve, reject) => {
@@ -13,6 +15,11 @@ function unshortenUrl(url) {
         method: "HEAD",
         path: parsedUrl.pathname + parsedUrl.search,
       };
+
+      limitRequestInit++;
+      if(limitRequestInit === limitRequest){
+        resolve(null);
+      }
 
       const req = https.request(options, (res) => {
         if (
@@ -58,6 +65,7 @@ async function convertMapUrlToPoint(url) {
   return unshortenUrl(url)
     .then((unshortenedUrl) => {
       console.log("Unshortened URL:", unshortenedUrl);
+      if(unshortenedUrl === null) return {latitude:null, longitude:null};
       let coor = urlToPoint(unshortenedUrl);
       if(coor === null){
         coor = getCoordsWithPuppeteer(unshortenedUrl);
