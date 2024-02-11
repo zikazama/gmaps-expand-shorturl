@@ -20,26 +20,27 @@ function unshortenUrl(url) {
       if(limitRequestInit === limitRequest){
         resolve(null);
       }
+      resolve(url);
 
-      const req = https.request(options, (res) => {
-        if (
-          res.statusCode >= 300 &&
-          res.statusCode < 400 &&
-          res.headers.location
-        ) {
-          const newUrl = res.headers.location;
-          unshortenUrl(newUrl).then(resolve).catch(reject); // Recursively unshorten
-        } else {
-          resolve(url);
-        }
-      });
+      // const req = https.request(options, (res) => {
+      //   if (
+      //     res.statusCode >= 300 &&
+      //     res.statusCode < 400 &&
+      //     res.headers.location
+      //   ) {
+      //     const newUrl = res.headers.location;
+      //     unshortenUrl(newUrl).then(resolve).catch(reject); // Recursively unshorten
+      //   } else {
+      //     resolve(url);
+      //   }
+      // });
 
-      req.on("error", (error) => {
-        console.error("Error unshortening URL:", url, error.message);
-        reject(url); // Return original URL on error
-      });
+      // req.on("error", (error) => {
+      //   console.error("Error unshortening URL:", url, error.message);
+      //   reject(url); // Return original URL on error
+      // });
 
-      req.end();
+      // req.end();
     } catch (error) {
       console.error("Error unshortening URL:", url, error.message);
       reject(url); // Return original URL on error
@@ -85,7 +86,7 @@ async function getCoordsWithPuppeteer(url) {
     await page.goto(url);
 
     // Wait for 3 seconds for the full URL to appear
-    await new Promise((res) => setTimeout(res, 5000));
+    await new Promise((res) => setTimeout(res, 3500));
 
     const fullUrl = page.url(); // Get the updated URL
 
