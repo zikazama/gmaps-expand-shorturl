@@ -4,6 +4,23 @@ const puppeteer = require("puppeteer");
 let limitRequestInit = 0;
 let limitRequest = 3;
 
+function isGoogleMapsUrl(url) {
+  const regexes = [
+    /^(http|https):\/\/(www\.)?maps\.google\.com\/(\?q=|maps\?)(.*)$/, // Standard Maps URLs
+    /^(http|https):\/\/(www\.)?google\.com\/maps\/place\/(.*)$/, // Place URLs
+    /^(http|https):\/\/(www\.)?maps\.googleapis\.com\/maps\/api\/staticmap\?(.*)$/, // Static Map URLs
+    /^https:\/\/maps\.app\.goo\.gl\/\w+$/
+  ];
+
+  for (const regex of regexes) {
+    if (regex.test(url)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 function unshortenUrl(url) {
   return new Promise((resolve, reject) => {
     try {
@@ -23,16 +40,18 @@ function unshortenUrl(url) {
       resolve(url);
 
       // const req = https.request(options, (res) => {
-      //   if (
-      //     res.statusCode >= 300 &&
-      //     res.statusCode < 400 &&
-      //     res.headers.location
-      //   ) {
-      //     const newUrl = res.headers.location;
-      //     unshortenUrl(newUrl).then(resolve).catch(reject); // Recursively unshorten
-      //   } else {
-      //     resolve(url);
-      //   }
+      //   // if (
+      //   //   res.statusCode >= 300 &&
+      //   //   res.statusCode < 400 &&
+      //   //   res.headers.location
+      //   // ) {
+      //   //   const newUrl = res.headers.location;
+      //   //   unshortenUrl(newUrl).then(resolve).catch(reject); // Recursively unshorten
+      //   // } else {
+      //   //   resolve(url);
+      //   // }
+      //   req.end();
+      //   resolve(url);
       // });
 
       // req.on("error", (error) => {
@@ -63,6 +82,10 @@ function urlToPoint(url) {
 }
 
 async function convertMapUrlToPoint(url) {
+  const check = isGoogleMapsUrl(url);
+  if(check === false) {
+    return {latitude: null, longitude: null}
+  }
   return unshortenUrl(url)
     .then((unshortenedUrl) => {
       console.log("Unshortened URL:", unshortenedUrl);
