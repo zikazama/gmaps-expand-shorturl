@@ -9,7 +9,9 @@ function isGoogleMapsUrl(url) {
     /^(http|https):\/\/(www\.)?maps\.google\.com\/(\?q=|maps\?)(.*)$/, // Standard Maps URLs
     /^(http|https):\/\/(www\.)?google\.com\/maps\/place\/(.*)$/, // Place URLs
     /^(http|https):\/\/(www\.)?maps\.googleapis\.com\/maps\/api\/staticmap\?(.*)$/, // Static Map URLs
-    /^https:\/\/maps\.app\.goo\.gl\/\w+$/
+    /^https:\/\/maps\.app\.goo\.gl\/\w+$/,
+    /^(http|https):\/\/(www\.)?google\.com\/maps\/(preview\/)?\?q=[\d\.\-]+,[\d\.\-]+(@[\d\.\-]+,[\d\.\-]+)?(,[\d]+z)?$/,
+    /^(http|https):\/\/(www\.)?google\.com\/maps\/preview\/@[\d\.\-]+,[\d\.\-]+,[\d]+z$/,
   ];
 
   for (const regex of regexes) {
@@ -89,7 +91,6 @@ async function convertMapUrlToPoint(url) {
   return unshortenUrl(url)
     .then((unshortenedUrl) => {
       console.log("Unshortened URL:", unshortenedUrl);
-      if(unshortenedUrl === null) return {latitude:null, longitude:null};
       let coor = urlToPoint(unshortenedUrl);
       if(coor === null){
         coor = getCoordsWithPuppeteer(unshortenedUrl);
@@ -109,9 +110,13 @@ async function getCoordsWithPuppeteer(url) {
     await page.goto(url);
 
     // Wait for 3 seconds for the full URL to appear
-    await new Promise((res) => setTimeout(res, 3500));
+    await new Promise((res) => setTimeout(res, 3000));
 
     const fullUrl = page.url(); // Get the updated URL
+
+    if(url !== fullUrl){
+      return urlToPoint(fullUrl);
+    }
 
     const coords = await convertMapUrlToPoint(fullUrl); // Use your existing parsing function
 
