@@ -36,7 +36,7 @@ function unshortenUrl(url) {
       };
 
       limitRequestInit++;
-      if(limitRequestInit === limitRequest){
+      if (limitRequestInit === limitRequest) {
         resolve(null);
       }
       resolve(url);
@@ -85,14 +85,14 @@ function urlToPoint(url) {
 
 async function convertMapUrlToPoint(url) {
   const check = isGoogleMapsUrl(url);
-  if(check === false) {
-    return {latitude: null, longitude: null}
+  if (check === false) {
+    return { latitude: null, longitude: null };
   }
   return unshortenUrl(url)
     .then((unshortenedUrl) => {
       console.log("Unshortened URL:", unshortenedUrl);
       let coor = urlToPoint(unshortenedUrl);
-      if(coor === null){
+      if (coor === null) {
         coor = getCoordsWithPuppeteer(unshortenedUrl);
       }
       return coor;
@@ -103,7 +103,9 @@ async function convertMapUrlToPoint(url) {
 }
 
 async function getCoordsWithPuppeteer(url) {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  });
   const page = await browser.newPage();
 
   try {
@@ -114,7 +116,7 @@ async function getCoordsWithPuppeteer(url) {
 
     const fullUrl = page.url(); // Get the updated URL
 
-    if(url !== fullUrl){
+    if (url !== fullUrl) {
       return urlToPoint(fullUrl);
     }
 
